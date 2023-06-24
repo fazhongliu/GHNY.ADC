@@ -48,7 +48,7 @@ using Volo.Abp.VirtualFileSystem;
 namespace GHNY.ADC.Web;
 
 [DependsOn(
-    typeof(ADCHttpApiClientModule),
+    //typeof(ADCHttpApiClientModule),
     typeof(ADCHttpApiModule),
     typeof(AbpAspNetCoreAuthenticationOpenIdConnectModule),
     typeof(AbpAspNetCoreMvcClientModule),

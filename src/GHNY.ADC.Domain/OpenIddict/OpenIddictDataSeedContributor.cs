@@ -115,6 +115,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                 consentType: OpenIddictConstants.ConsentTypes.Implicit,
                 displayName: "Console Test / Angular Application",
                 secret: null,
+                //secret: configurationSection["ADC_App:ClientSecret"] ?? "1q2w3e*",
                 grantTypes: new List<string>
                 {
                     OpenIddictConstants.GrantTypes.AuthorizationCode,

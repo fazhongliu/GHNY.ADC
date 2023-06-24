@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GHNY.ADC.Farm;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.Identity;
 using Volo.Abp.Identity.EntityFrameworkCore;
@@ -53,17 +56,20 @@ public class ADCDbContext :
 
     #endregion
     public DbSet<TodoItem> TodoItems { get; set; }
+    public DbSet<Farmer> Farmers { get; set; }
 
     public ADCDbContext(DbContextOptions<ADCDbContext> options)
         : base(options)
     {
-
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-
+        var options = new ADCModelBuilderConfigurationOptions(
+               ADCDbProperties.DbTablePrefix,
+               ADCDbProperties.DbSchema
+           );
         /* Include modules to your migration db context */
 
         builder.ConfigurePermissionManagement();
@@ -86,6 +92,35 @@ public class ADCDbContext :
         builder.Entity<TodoItem>(b =>
         {
             b.ToTable("TodoItems");
+        });
+        builder.Entity<Farmer>(b =>
+        {
+            b.ToTable(options.TablePrefix + "Farmers", options.Schema);
+            b.ToTable(t => t.HasComment("农场主信息"));
+            b.ConfigureByConvention();
+
+
+            /* Configure more properties here */
+            b.Property(x => x.Id).HasComment("主键，Guid").IsRequired(true);
+            b.Property(x => x.Name).HasComment("姓名").IsRequired(true).HasMaxLength(50);
+            b.Property(x => x.Phone).HasComment("电话").IsRequired(false).HasMaxLength(50);
+            b.Property(x => x.Sex).HasComment("性别").IsRequired(false);
+            b.Property(x => x.Nation).HasComment("民族").IsRequired(false).HasMaxLength(50);
+            b.Property(x => x.ProvinceId).HasComment("省").IsRequired(false).HasMaxLength(18);
+            b.Property(x => x.CityId).HasComment("市").IsRequired(false).HasMaxLength(18);
+            b.Property(x => x.DistrictId).HasComment("区(县)").IsRequired(false).HasMaxLength(18);
+            b.Property(x => x.TownId).HasComment("镇(乡)").IsRequired(false).HasMaxLength(18);
+            b.Property(x => x.VillageId).HasComment("村(社区)").IsRequired(false).HasMaxLength(18);
+            b.Property(x => x.Address).HasComment("地址").IsRequired(false);
+            b.Property(x => x.IdCard).HasComment("身份证号").IsRequired(false).HasMaxLength(18);
+            b.Property(x => x.IdCardStartDate).HasComment("身份证开始有效期").IsRequired(false);
+            b.Property(x => x.IdCardEndDate).HasComment("身份证结束有效期").IsRequired(false);
+            b.Property(x => x.BankName).HasComment("开户银行").IsRequired(false);
+            b.Property(x => x.BankAccount).HasComment("银行账号").IsRequired(false);
+            b.Property(x => x.AccountName).HasComment("账号姓名").IsRequired(false);
+            b.Property(x => x.BankName).HasComment("开户银行").IsRequired(false);
+            b.Property(x => x.IsDeleted).HasComment("").IsRequired(true);
+            b.Property(x => x.DeletionTime).HasComment("").IsRequired(false);
         });
     }
 }
