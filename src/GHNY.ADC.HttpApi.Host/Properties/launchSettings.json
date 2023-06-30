@@ -18,7 +18,9 @@
     "GHNY.ADC.HttpApi.Host": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://192.168.10.105:44393",
+      //"applicationUrl": "http://192.168.10.105:44393",
+      //"applicationUrl": "http://192.168.1.73:44393",
+      "applicationUrl": "http://localhost:44393",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

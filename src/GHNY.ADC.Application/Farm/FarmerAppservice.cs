@@ -10,12 +10,12 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace GHNY.ADC.Farm
 {
-    public class FarmerAppservice : ApplicationService,IFarmerAppService
+    public class FarmerAppService : ApplicationService,IFarmerAppService
     {
         private readonly IFarmerRepository _farmerRepository;
 
 
-        public FarmerAppservice(IFarmerRepository farmerRepository)
+        public FarmerAppService(IFarmerRepository farmerRepository)
         {
             _farmerRepository = farmerRepository;
         }
